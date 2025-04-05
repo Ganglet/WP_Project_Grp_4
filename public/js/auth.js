@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'dashboard.html';
         } else if (userType === 'faculty') {
             window.location.href = 'faculty-dashboard.html';
-        } else {
+        } else if (userType === 'admin') {
             window.location.href = 'admin-dashboard.html';
         }
     }
@@ -165,9 +165,14 @@ document.addEventListener('DOMContentLoaded', function() {
             { email: 'john.smith@example.com', password: 'faculty123', userType: 'faculty' },
             { email: 'jane.doe@example.com', password: 'faculty123', userType: 'faculty' },
             { email: 'robert.johnson@example.com', password: 'faculty123', userType: 'faculty' },
+            { email: 'michael.williams@example.com', password: 'faculty123', userType: 'faculty' },
+            { email: 'sarah.brown@example.com', password: 'faculty123', userType: 'faculty' },
+            { email: 'david.miller@example.com', password: 'faculty123', userType: 'faculty' },
             { email: 'alice.johnson@example.com', password: 'student123', userType: 'student' },
             { email: 'bob.williams@example.com', password: 'student123', userType: 'student' },
             { email: 'carol.brown@example.com', password: 'student123', userType: 'student' },
+            { email: 'david.lee@example.com', password: 'student123', userType: 'student' },
+            { email: 'emma.wilson@example.com', password: 'student123', userType: 'student' },
             { email: 'admin@example.com', password: 'admin123', userType: 'admin' }
         ];
         
@@ -181,25 +186,183 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to initialize demo data if this is the first time
     function initializeDemoData() {
         const faculties = [
-            { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science' },
-            { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics' },
-            { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics' }
+            { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science', title: 'Associate Professor' },
+            { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics', title: 'Professor' },
+            { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics', title: 'Assistant Professor' },
+            { id: 'f4', name: 'Dr. Michael Williams', department: 'Chemistry', title: 'Associate Professor' },
+            { id: 'f5', name: 'Prof. Sarah Brown', department: 'Biology', title: 'Professor' },
+            { id: 'f6', name: 'Dr. David Miller', department: 'Engineering', title: 'Assistant Professor' }
         ];
         
         const courses = {
             'f1': [
                 { id: 'c1', name: 'Introduction to Programming', code: 'CS101' },
-                { id: 'c2', name: 'Data Structures', code: 'CS201' }
+                { id: 'c2', name: 'Data Structures', code: 'CS201' },
+                { id: 'c7', name: 'Software Engineering', code: 'CS301' },
+                { id: 'c8', name: 'Algorithms', code: 'CS202' }
             ],
             'f2': [
                 { id: 'c3', name: 'Calculus I', code: 'MATH101' },
-                { id: 'c4', name: 'Linear Algebra', code: 'MATH201' }
+                { id: 'c4', name: 'Linear Algebra', code: 'MATH201' },
+                { id: 'c9', name: 'Differential Equations', code: 'MATH301' },
+                { id: 'c10', name: 'Statistics', code: 'MATH202' }
             ],
             'f3': [
                 { id: 'c5', name: 'Mechanics', code: 'PHY101' },
-                { id: 'c6', name: 'Electromagnetism', code: 'PHY201' }
+                { id: 'c6', name: 'Electromagnetism', code: 'PHY201' },
+                { id: 'c11', name: 'Quantum Physics', code: 'PHY301' },
+                { id: 'c12', name: 'Thermodynamics', code: 'PHY202' }
+            ],
+            'f4': [
+                { id: 'c13', name: 'General Chemistry', code: 'CHEM101' },
+                { id: 'c14', name: 'Organic Chemistry', code: 'CHEM201' },
+                { id: 'c15', name: 'Biochemistry', code: 'CHEM301' }
+            ],
+            'f5': [
+                { id: 'c16', name: 'Cell Biology', code: 'BIO101' },
+                { id: 'c17', name: 'Molecular Biology', code: 'BIO201' },
+                { id: 'c18', name: 'Genetics', code: 'BIO301' }
+            ],
+            'f6': [
+                { id: 'c19', name: 'Statics', code: 'ENG101' },
+                { id: 'c20', name: 'Dynamics', code: 'ENG201' },
+                { id: 'c21', name: 'Fluid Mechanics', code: 'ENG301' }
             ]
         };
+        
+        // Add demo feedback data
+        const feedbackData = [
+            {
+                id: 'fb1',
+                studentEmail: 'alice.johnson@example.com',
+                facultyId: 'f1',
+                courseId: 'c1',
+                ratings: {
+                    teaching: 5,
+                    communication: 4,
+                    helpfulness: 5
+                },
+                comments: 'Very knowledgeable and always willing to help students.',
+                date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() // 5 days ago
+            },
+            {
+                id: 'fb2',
+                studentEmail: 'bob.williams@example.com',
+                facultyId: 'f1',
+                courseId: 'c2',
+                ratings: {
+                    teaching: 4,
+                    communication: 5,
+                    helpfulness: 4
+                },
+                comments: 'Explains complex topics in an understandable way.',
+                date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() // 10 days ago
+            },
+            {
+                id: 'fb3',
+                studentEmail: 'carol.brown@example.com',
+                facultyId: 'f2',
+                courseId: 'c3',
+                ratings: {
+                    teaching: 5,
+                    communication: 5,
+                    helpfulness: 4
+                },
+                comments: 'Excellent teaching methods, makes math interesting.',
+                date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() // 15 days ago
+            },
+            {
+                id: 'fb4',
+                studentEmail: 'david.lee@example.com',
+                facultyId: 'f3',
+                courseId: 'c5',
+                ratings: {
+                    teaching: 4,
+                    communication: 3,
+                    helpfulness: 5
+                },
+                comments: 'Great with practical examples, but sometimes lectures are hard to follow.',
+                date: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString() // 20 days ago
+            },
+            {
+                id: 'fb5',
+                studentEmail: 'emma.wilson@example.com',
+                facultyId: 'f4',
+                courseId: 'c13',
+                ratings: {
+                    teaching: 5,
+                    communication: 4,
+                    helpfulness: 5
+                },
+                comments: 'Very organized and clear in explanations.',
+                date: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString() // 25 days ago
+            },
+            {
+                id: 'fb6',
+                studentEmail: 'alice.johnson@example.com',
+                facultyId: 'f5',
+                courseId: 'c16',
+                ratings: {
+                    teaching: 5,
+                    communication: 5,
+                    helpfulness: 5
+                },
+                comments: 'Passionate about the subject, makes biology fascinating.',
+                date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days ago
+            },
+            {
+                id: 'fb7',
+                studentEmail: 'bob.williams@example.com',
+                facultyId: 'f6',
+                courseId: 'c19',
+                ratings: {
+                    teaching: 4,
+                    communication: 4,
+                    helpfulness: 4
+                },
+                comments: 'Good teaching techniques, but assignments can be challenging.',
+                date: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString() // 35 days ago
+            },
+            {
+                id: 'fb8',
+                studentEmail: 'carol.brown@example.com',
+                facultyId: 'f3',
+                courseId: 'c6',
+                ratings: {
+                    teaching: 5,
+                    communication: 4,
+                    helpfulness: 4
+                },
+                comments: 'Explains difficult physics concepts clearly with good examples.',
+                date: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString() // 40 days ago
+            },
+            {
+                id: 'fb9',
+                studentEmail: 'david.lee@example.com',
+                facultyId: 'f2',
+                courseId: 'c4',
+                ratings: {
+                    teaching: 4,
+                    communication: 5,
+                    helpfulness: 5
+                },
+                comments: 'Always available to help outside of class.',
+                date: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString() // 45 days ago
+            },
+            {
+                id: 'fb10',
+                studentEmail: 'emma.wilson@example.com',
+                facultyId: 'f1',
+                courseId: 'c8',
+                ratings: {
+                    teaching: 5,
+                    communication: 4,
+                    helpfulness: 5
+                },
+                comments: 'Excellent at breaking down complex algorithms.',
+                date: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString() // 50 days ago
+            }
+        ];
         
         // Add demo users
         const users = [
@@ -231,6 +394,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'Assistant Professor',
                 createdAt: new Date().toISOString()
             },
+            {
+                name: 'Dr. Michael Williams',
+                email: 'michael.williams@example.com',
+                password: 'faculty123',
+                userType: 'faculty',
+                department: 'Chemistry',
+                title: 'Associate Professor',
+                createdAt: new Date().toISOString()
+            },
+            {
+                name: 'Prof. Sarah Brown',
+                email: 'sarah.brown@example.com',
+                password: 'faculty123',
+                userType: 'faculty',
+                department: 'Biology',
+                title: 'Professor',
+                createdAt: new Date().toISOString()
+            },
+            {
+                name: 'Dr. David Miller',
+                email: 'david.miller@example.com',
+                password: 'faculty123',
+                userType: 'faculty',
+                department: 'Engineering',
+                title: 'Assistant Professor',
+                createdAt: new Date().toISOString()
+            },
             // Student users
             {
                 name: 'Alice Johnson',
@@ -259,12 +449,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 year: '4th Year',
                 createdAt: new Date().toISOString()
             },
+            {
+                name: 'David Lee',
+                email: 'david.lee@example.com',
+                password: 'student123',
+                userType: 'student',
+                department: 'Computer Science',
+                year: '3rd Year',
+                createdAt: new Date().toISOString()
+            },
+            {
+                name: 'Emma Wilson',
+                email: 'emma.wilson@example.com',
+                password: 'student123',
+                userType: 'student',
+                department: 'Mathematics',
+                year: '2nd Year',
+                createdAt: new Date().toISOString()
+            },
             // Admin user
             {
                 name: 'Admin User',
                 email: 'admin@example.com',
                 password: 'admin123',
                 userType: 'admin',
+                department: 'Administration',
                 createdAt: new Date().toISOString()
             }
         ];
@@ -273,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('users', JSON.stringify(users));
         localStorage.setItem('faculties', JSON.stringify(faculties));
         localStorage.setItem('courses', JSON.stringify(courses));
+        localStorage.setItem('feedback', JSON.stringify(feedbackData));
     }
     
     // Function to show messages

@@ -157,7 +157,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const facultyEmails = {
             'john.smith@example.com': 'f1',
             'jane.doe@example.com': 'f2',
-            'robert.johnson@example.com': 'f3'
+            'robert.johnson@example.com': 'f3',
+            'michael.williams@example.com': 'f4',
+            'sarah.brown@example.com': 'f5',
+            'david.miller@example.com': 'f6'
         };
         
         facultyId = facultyEmails[facultyEmail] || 'f1'; // Default to f1 for demo
@@ -226,7 +229,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const facultyEmails = {
             'john.smith@example.com': 'f1',
             'jane.doe@example.com': 'f2',
-            'robert.johnson@example.com': 'f3'
+            'robert.johnson@example.com': 'f3',
+            'michael.williams@example.com': 'f4',
+            'sarah.brown@example.com': 'f5',
+            'david.miller@example.com': 'f6'
         };
         
         const facultyId = facultyEmails[facultyEmail] || 'f1'; // Default to f1 for demo
@@ -261,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let teachingTotal = 0;
         let communicationTotal = 0;
         let helpfulnessTotal = 0;
-        let commentsList = [];
+        let anonymousComments = [];
         
         facultyFeedback.forEach(feedback => {
             teachingTotal += feedback.ratings.teaching;
@@ -269,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
             helpfulnessTotal += feedback.ratings.helpfulness;
             
             if (feedback.comments) {
-                // Get course name
+                // Get course name but keep student anonymous
                 const courses = JSON.parse(localStorage.getItem('courses') || '{}');
                 let courseName = 'Unknown Course';
                 
@@ -278,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (course) courseName = course.name;
                 }
                 
-                commentsList.push({
+                anonymousComments.push({
                     text: feedback.comments,
                     course: courseName,
                     date: new Date(feedback.date).toLocaleDateString()
@@ -367,10 +373,10 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        // Update comments in UI
+        // Update comments in UI (now anonymized)
         const commentsContainer = document.querySelector('.comments-list');
         
-        if (commentsList.length === 0) {
+        if (anonymousComments.length === 0) {
             commentsContainer.innerHTML = '<p class="empty-state">No comments available.</p>';
             return;
         }
@@ -378,15 +384,15 @@ document.addEventListener('DOMContentLoaded', function() {
         let commentsHtml = '';
         
         // Sort comments by date, newest first
-        commentsList.sort((a, b) => new Date(b.date) - new Date(a.date));
+        anonymousComments.sort((a, b) => new Date(b.date) - new Date(a.date));
         
-        commentsList.forEach(comment => {
+        anonymousComments.forEach(comment => {
             commentsHtml += `
-                <div class="comment-card">
-                    <p class="comment-text">"${comment.text}"</p>
-                    <div class="comment-meta">
-                        <span class="comment-course">${comment.course}</span>
-                        <span class="comment-date">${comment.date}</span>
+                <div class="anonymous-comment">
+                    <p class="anonymous-comment-text">"${comment.text}"</p>
+                    <div class="anonymous-meta">
+                        <span class="anonymous-course">${comment.course}</span>
+                        <span class="anonymous-date">${comment.date}</span>
                     </div>
                 </div>
             `;

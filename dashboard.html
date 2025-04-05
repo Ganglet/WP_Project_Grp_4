@@ -6,6 +6,53 @@
     <title>Student Dashboard | Faculty Feedback System</title>
     <link rel="stylesheet" href="public/css/style.css">
     <link rel="stylesheet" href="public/css/dashboard.css">
+    <style>
+        /* Additional styles for feedback cards */
+        .feedback-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .feedback-date {
+            color: var(--grey-color);
+            font-size: 14px;
+        }
+        
+        .feedback-ratings {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .feedback-ratings span {
+            background-color: var(--light-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .feedback-comments {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--light-color);
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">

@@ -193,18 +193,32 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Helper functions
     function loadFacultyList() {
-        // In a real app, this would fetch from a server
-        // For demo, we'll use mock data
-        const faculties = [
-            { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science' },
-            { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics' },
-            { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics' }
-        ];
+        // Check if facultyData already exists in localStorage
+        const existingFaculties = JSON.parse(localStorage.getItem('faculties') || '[]');
         
-        // Save to localStorage for demo purposes
-        localStorage.setItem('faculties', JSON.stringify(faculties));
-        
-        // Populate faculty select
+        if (existingFaculties.length > 0) {
+            // Use existing data from localStorage (which may have been populated by auth.js)
+            populateFacultySelect(existingFaculties);
+        } else {
+            // If no data exists, create and save the expanded faculty list
+            const faculties = [
+                { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science', title: 'Associate Professor' },
+                { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics', title: 'Professor' },
+                { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics', title: 'Assistant Professor' },
+                { id: 'f4', name: 'Dr. Michael Williams', department: 'Chemistry', title: 'Associate Professor' },
+                { id: 'f5', name: 'Prof. Sarah Brown', department: 'Biology', title: 'Professor' },
+                { id: 'f6', name: 'Dr. David Miller', department: 'Engineering', title: 'Assistant Professor' }
+            ];
+            
+            // Save to localStorage
+            localStorage.setItem('faculties', JSON.stringify(faculties));
+            
+            // Populate faculty select
+            populateFacultySelect(faculties);
+        }
+    }
+    
+    function populateFacultySelect(faculties) {
         const facultySelect = document.getElementById('faculty-select');
         let options = '<option value="">-- Select a faculty member --</option>';
         
@@ -216,27 +230,59 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function loadFacultyCourses(facultyId) {
-        // In a real app, this would fetch from a server
-        // For demo, we'll use mock data
-        const courses = {
-            'f1': [
-                { id: 'c1', name: 'Introduction to Programming', code: 'CS101' },
-                { id: 'c2', name: 'Data Structures', code: 'CS201' }
-            ],
-            'f2': [
-                { id: 'c3', name: 'Calculus I', code: 'MATH101' },
-                { id: 'c4', name: 'Linear Algebra', code: 'MATH201' }
-            ],
-            'f3': [
-                { id: 'c5', name: 'Mechanics', code: 'PHY101' },
-                { id: 'c6', name: 'Electromagnetism', code: 'PHY201' }
-            ]
-        };
+        // Check if courses already exist in localStorage
+        const existingCourses = JSON.parse(localStorage.getItem('courses') || '{}');
         
-        // Save to localStorage for demo purposes
-        localStorage.setItem('courses', JSON.stringify(courses));
-        
-        // Populate course select
+        if (Object.keys(existingCourses).length > 0) {
+            // Use existing data from localStorage (which may have been populated by auth.js)
+            populateCourseSelect(facultyId, existingCourses);
+        } else {
+            // If no data exists, create and save the expanded courses list
+            const courses = {
+                'f1': [
+                    { id: 'c1', name: 'Introduction to Programming', code: 'CS101' },
+                    { id: 'c2', name: 'Data Structures', code: 'CS201' },
+                    { id: 'c7', name: 'Software Engineering', code: 'CS301' },
+                    { id: 'c8', name: 'Algorithms', code: 'CS202' }
+                ],
+                'f2': [
+                    { id: 'c3', name: 'Calculus I', code: 'MATH101' },
+                    { id: 'c4', name: 'Linear Algebra', code: 'MATH201' },
+                    { id: 'c9', name: 'Differential Equations', code: 'MATH301' },
+                    { id: 'c10', name: 'Statistics', code: 'MATH202' }
+                ],
+                'f3': [
+                    { id: 'c5', name: 'Mechanics', code: 'PHY101' },
+                    { id: 'c6', name: 'Electromagnetism', code: 'PHY201' },
+                    { id: 'c11', name: 'Quantum Physics', code: 'PHY301' },
+                    { id: 'c12', name: 'Thermodynamics', code: 'PHY202' }
+                ],
+                'f4': [
+                    { id: 'c13', name: 'General Chemistry', code: 'CHEM101' },
+                    { id: 'c14', name: 'Organic Chemistry', code: 'CHEM201' },
+                    { id: 'c15', name: 'Biochemistry', code: 'CHEM301' }
+                ],
+                'f5': [
+                    { id: 'c16', name: 'Cell Biology', code: 'BIO101' },
+                    { id: 'c17', name: 'Molecular Biology', code: 'BIO201' },
+                    { id: 'c18', name: 'Genetics', code: 'BIO301' }
+                ],
+                'f6': [
+                    { id: 'c19', name: 'Statics', code: 'ENG101' },
+                    { id: 'c20', name: 'Dynamics', code: 'ENG201' },
+                    { id: 'c21', name: 'Fluid Mechanics', code: 'ENG301' }
+                ]
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('courses', JSON.stringify(courses));
+            
+            // Populate course select
+            populateCourseSelect(facultyId, courses);
+        }
+    }
+    
+    function populateCourseSelect(facultyId, courses) {
         const courseSelect = document.getElementById('course-select');
         let options = '<option value="">-- Select a course --</option>';
         
@@ -253,56 +299,71 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get all feedback from localStorage
         const allFeedback = JSON.parse(localStorage.getItem('feedback') || '[]');
         
-        // Filter for current user's feedback
-        const userFeedback = allFeedback.filter(feedback => feedback.studentEmail === currentUser.email);
+        // Filter feedback for current student
+        const studentFeedback = allFeedback.filter(f => f.studentEmail === currentUser.email);
         
-        // Get faculty and course data
+        // Get faculties and courses data for display
         const faculties = JSON.parse(localStorage.getItem('faculties') || '[]');
         const courses = JSON.parse(localStorage.getItem('courses') || '{}');
         
         // Update UI
-        const feedbackHistory = document.querySelector('.feedback-history');
+        const historyContainer = document.querySelector('.feedback-history');
         
-        if (userFeedback.length === 0) {
-            feedbackHistory.innerHTML = '<p class="empty-state">No feedback submitted yet.</p>';
+        if (studentFeedback.length === 0) {
+            historyContainer.innerHTML = '<p class="empty-state">No feedback submitted yet.</p>';
             return;
         }
         
         let html = '';
         
-        userFeedback.forEach(feedback => {
-            // Find faculty and course names
-            const faculty = faculties.find(f => f.id === feedback.facultyId) || { name: 'Unknown Faculty' };
-            let courseName = 'Unknown Course';
+        // Sort feedback by date, newest first
+        studentFeedback.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        studentFeedback.forEach(feedback => {
+            // Find faculty name
+            const faculty = faculties.find(f => f.id === feedback.facultyId);
+            let facultyName = 'Unknown Faculty';
+            if (faculty) facultyName = faculty.name;
             
+            // Find course name
+            let courseName = 'Unknown Course';
             if (courses[feedback.facultyId]) {
                 const course = courses[feedback.facultyId].find(c => c.id === feedback.courseId);
                 if (course) courseName = `${course.name} (${course.code})`;
             }
             
-            // Calculate average rating
-            const ratings = feedback.ratings;
-            const avgRating = ((ratings.teaching + ratings.communication + ratings.helpfulness) / 3).toFixed(1);
-            
             // Format date
             const date = new Date(feedback.date).toLocaleDateString();
             
+            // Calculate average rating
+            const avgRating = (
+                (feedback.ratings.teaching + feedback.ratings.communication + feedback.ratings.helpfulness) / 3
+            ).toFixed(1);
+            
             html += `
-                <div class="comment-card">
-                    <div class="comment-header">
-                        <h4>${faculty.name}</h4>
-                        <span class="rating-value">${avgRating}/5</span>
+                <div class="feedback-card">
+                    <div class="feedback-header">
+                        <h3>${facultyName}</h3>
+                        <span class="feedback-date">${date}</span>
                     </div>
-                    <p class="comment-course">${courseName}</p>
-                    <p class="comment-text">${feedback.comments || 'No comments provided.'}</p>
-                    <div class="comment-meta">
-                        <span class="comment-date">${date}</span>
+                    <p><strong>Course:</strong> ${courseName}</p>
+                    <p><strong>Average Rating:</strong> ${avgRating}/5</p>
+                    <div class="feedback-ratings">
+                        <span><strong>Teaching:</strong> ${feedback.ratings.teaching}/5</span>
+                        <span><strong>Communication:</strong> ${feedback.ratings.communication}/5</span>
+                        <span><strong>Helpfulness:</strong> ${feedback.ratings.helpfulness}/5</span>
                     </div>
+                    ${feedback.comments ? `
+                        <div class="feedback-comments">
+                            <p><strong>Comments:</strong></p>
+                            <p>${feedback.comments}</p>
+                        </div>
+                    ` : ''}
                 </div>
             `;
         });
         
-        feedbackHistory.innerHTML = html;
+        historyContainer.innerHTML = html;
     }
     
     function loadProfileData() {
@@ -329,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        return 'feedback_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
     
     function showMessage(message, type) {
