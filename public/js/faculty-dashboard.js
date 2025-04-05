@@ -267,12 +267,22 @@ document.addEventListener('DOMContentLoaded', function() {
         let teachingTotal = 0;
         let communicationTotal = 0;
         let helpfulnessTotal = 0;
+        let knowledgeTotal = 0;
+        let organizationTotal = 0;
+        let availabilityTotal = 0;
+        let fairnessTotal = 0;
         let anonymousComments = [];
         
         facultyFeedback.forEach(feedback => {
             teachingTotal += feedback.ratings.teaching;
             communicationTotal += feedback.ratings.communication;
             helpfulnessTotal += feedback.ratings.helpfulness;
+            
+            // Add new rating categories
+            knowledgeTotal += feedback.ratings.knowledge || 0; // Use 0 as fallback for backward compatibility
+            organizationTotal += feedback.ratings.organization || 0;
+            availabilityTotal += feedback.ratings.availability || 0;
+            fairnessTotal += feedback.ratings.fairness || 0;
             
             if (feedback.comments) {
                 // Get course name but keep student anonymous
@@ -307,7 +317,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const teachingAvg = (teachingTotal / feedbackCount).toFixed(1);
         const communicationAvg = (communicationTotal / feedbackCount).toFixed(1);
         const helpfulnessAvg = (helpfulnessTotal / feedbackCount).toFixed(1);
-        const overallAvg = ((teachingTotal + communicationTotal + helpfulnessTotal) / (feedbackCount * 3)).toFixed(1);
+        const knowledgeAvg = (knowledgeTotal / feedbackCount).toFixed(1);
+        const organizationAvg = (organizationTotal / feedbackCount).toFixed(1);
+        const availabilityAvg = (availabilityTotal / feedbackCount).toFixed(1);
+        const fairnessAvg = (fairnessTotal / feedbackCount).toFixed(1);
+        
+        // Calculate overall average based on all criteria
+        const overallAvg = ((teachingTotal + communicationTotal + helpfulnessTotal + 
+                             knowledgeTotal + organizationTotal + availabilityTotal + fairnessTotal) / 
+                            (feedbackCount * 7)).toFixed(1);
         
         // Generate stars HTML based on rating
         function getStarsHtml(rating) {
@@ -332,43 +350,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         statsContainer.innerHTML = `
-            <div class="stat-card">
-                <h3>Teaching Quality</h3>
-                <div class="rating-display">
-                    <span class="rating-value">${teachingAvg}</span>
-                    <div class="rating-stars">
-                        ${getStarsHtml(teachingAvg)}
-                    </div>
+            <div class="rating-summary">
+                <div class="rating-card overall">
+                    <h3>Overall Rating</h3>
+                    <div class="rating-value">${overallAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(overallAvg)}</div>
+                    <p>${feedbackCount} ${feedbackCount === 1 ? 'student' : 'students'} rated your performance</p>
                 </div>
-            </div>
-            
-            <div class="stat-card">
-                <h3>Communication</h3>
-                <div class="rating-display">
-                    <span class="rating-value">${communicationAvg}</span>
-                    <div class="rating-stars">
-                        ${getStarsHtml(communicationAvg)}
-                    </div>
+                
+                <div class="rating-card">
+                    <h3>Teaching Quality</h3>
+                    <div class="rating-value">${teachingAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(teachingAvg)}</div>
                 </div>
-            </div>
-            
-            <div class="stat-card">
-                <h3>Helpfulness</h3>
-                <div class="rating-display">
-                    <span class="rating-value">${helpfulnessAvg}</span>
-                    <div class="rating-stars">
-                        ${getStarsHtml(helpfulnessAvg)}
-                    </div>
+                
+                <div class="rating-card">
+                    <h3>Communication</h3>
+                    <div class="rating-value">${communicationAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(communicationAvg)}</div>
                 </div>
-            </div>
-            
-            <div class="stat-card">
-                <h3>Overall</h3>
-                <div class="rating-display">
-                    <span class="rating-value">${overallAvg}</span>
-                    <div class="rating-stars">
-                        ${getStarsHtml(overallAvg)}
-                    </div>
+                
+                <div class="rating-card">
+                    <h3>Helpfulness</h3>
+                    <div class="rating-value">${helpfulnessAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(helpfulnessAvg)}</div>
+                </div>
+                
+                <div class="rating-card">
+                    <h3>Knowledge</h3>
+                    <div class="rating-value">${knowledgeAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(knowledgeAvg)}</div>
+                </div>
+                
+                <div class="rating-card">
+                    <h3>Organization</h3>
+                    <div class="rating-value">${organizationAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(organizationAvg)}</div>
+                </div>
+                
+                <div class="rating-card">
+                    <h3>Availability</h3>
+                    <div class="rating-value">${availabilityAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(availabilityAvg)}</div>
+                </div>
+                
+                <div class="rating-card">
+                    <h3>Fairness</h3>
+                    <div class="rating-value">${fairnessAvg}</div>
+                    <div class="rating-stars">${getStarsHtml(fairnessAvg)}</div>
                 </div>
             </div>
         `;

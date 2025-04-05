@@ -97,8 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const teachingRating = document.querySelector('input[name="teaching"]:checked');
         const communicationRating = document.querySelector('input[name="communication"]:checked');
         const helpfulnessRating = document.querySelector('input[name="helpfulness"]:checked');
+        const knowledgeRating = document.querySelector('input[name="knowledge"]:checked');
+        const organizationRating = document.querySelector('input[name="organization"]:checked');
+        const availabilityRating = document.querySelector('input[name="availability"]:checked');
+        const fairnessRating = document.querySelector('input[name="fairness"]:checked');
         
-        if (!teachingRating || !communicationRating || !helpfulnessRating) {
+        if (!teachingRating || !communicationRating || !helpfulnessRating || !knowledgeRating || 
+            !organizationRating || !availabilityRating || !fairnessRating) {
             showMessage('Please provide all ratings', 'error');
             return;
         }
@@ -115,7 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
             ratings: {
                 teaching: parseInt(teachingRating.value),
                 communication: parseInt(communicationRating.value),
-                helpfulness: parseInt(helpfulnessRating.value)
+                helpfulness: parseInt(helpfulnessRating.value),
+                knowledge: parseInt(knowledgeRating.value),
+                organization: parseInt(organizationRating.value),
+                availability: parseInt(availabilityRating.value),
+                fairness: parseInt(fairnessRating.value)
             },
             comments: comments,
             date: new Date().toISOString()
@@ -337,7 +346,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Calculate average rating
             const avgRating = (
-                (feedback.ratings.teaching + feedback.ratings.communication + feedback.ratings.helpfulness) / 3
+                (feedback.ratings.teaching + feedback.ratings.communication + feedback.ratings.helpfulness + 
+                feedback.ratings.knowledge + feedback.ratings.organization + feedback.ratings.availability + 
+                feedback.ratings.fairness) / 7
             ).toFixed(1);
             
             html += `
@@ -352,6 +363,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span><strong>Teaching:</strong> ${feedback.ratings.teaching}/5</span>
                         <span><strong>Communication:</strong> ${feedback.ratings.communication}/5</span>
                         <span><strong>Helpfulness:</strong> ${feedback.ratings.helpfulness}/5</span>
+                        <span><strong>Knowledge:</strong> ${feedback.ratings.knowledge}/5</span>
+                        <span><strong>Organization:</strong> ${feedback.ratings.organization}/5</span>
+                        <span><strong>Availability:</strong> ${feedback.ratings.availability}/5</span>
+                        <span><strong>Fairness:</strong> ${feedback.ratings.fairness}/5</span>
                     </div>
                     ${feedback.comments ? `
                         <div class="feedback-comments">

@@ -12,6 +12,14 @@ A comprehensive web application for students to provide feedback to faculty memb
 - Department and course-specific analytics
 - Profile management for all user types
 - Quick login with demo accounts
+- Comprehensive review criteria including:
+  - Teaching Quality
+  - Communication Skills
+  - Helpfulness
+  - Knowledge of Subject Matter
+  - Course Content Organization
+  - Availability Outside Class
+  - Fairness in Grading
 
 ## New Features and Improvements
 
@@ -21,6 +29,7 @@ A comprehensive web application for students to provide feedback to faculty memb
 - **Expanded Course Catalog**: Multiple courses per faculty member
 - **Enhanced UI**: Improved design and user experience across all dashboards
 - **Quick Login**: Direct access via demo accounts for testing purposes
+- **Comprehensive Rating System**: Seven detailed criteria for thorough faculty evaluation
 
 ## Technology Stack
 

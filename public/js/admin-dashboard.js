@@ -172,7 +172,24 @@ document.addEventListener('DOMContentLoaded', function() {
             if (facultyFeedback.length > 0) {
                 let totalRating = 0;
                 facultyFeedback.forEach(feedback => {
-                    const feedbackAvg = (feedback.ratings.teaching + feedback.ratings.communication + feedback.ratings.helpfulness) / 3;
+                    // Include all seven criteria in the average calculation
+                    const feedbackTotal = 
+                        (feedback.ratings.teaching || 0) + 
+                        (feedback.ratings.communication || 0) + 
+                        (feedback.ratings.helpfulness || 0) + 
+                        (feedback.ratings.knowledge || 0) + 
+                        (feedback.ratings.organization || 0) + 
+                        (feedback.ratings.availability || 0) + 
+                        (feedback.ratings.fairness || 0);
+                    
+                    // Count how many criteria are available (for backward compatibility)
+                    let criteriaCount = 3; // At minimum, we have the original 3
+                    if (feedback.ratings.knowledge) criteriaCount++;
+                    if (feedback.ratings.organization) criteriaCount++;
+                    if (feedback.ratings.availability) criteriaCount++;
+                    if (feedback.ratings.fairness) criteriaCount++;
+                    
+                    const feedbackAvg = feedbackTotal / criteriaCount;
                     totalRating += feedbackAvg;
                 });
                 avgRating = totalRating / facultyFeedback.length;
@@ -531,6 +548,22 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span>Helpfulness:</span>
                             <span>${feedback.ratings.helpfulness}.0</span>
                         </div>
+                        <div class="detailed-rating">
+                            <span>Knowledge:</span>
+                            <span>${feedback.ratings.knowledge ? feedback.ratings.knowledge + '.0' : 'N/A'}</span>
+                        </div>
+                        <div class="detailed-rating">
+                            <span>Organization:</span>
+                            <span>${feedback.ratings.organization ? feedback.ratings.organization + '.0' : 'N/A'}</span>
+                        </div>
+                        <div class="detailed-rating">
+                            <span>Availability:</span>
+                            <span>${feedback.ratings.availability ? feedback.ratings.availability + '.0' : 'N/A'}</span>
+                        </div>
+                        <div class="detailed-rating">
+                            <span>Fairness:</span>
+                            <span>${feedback.ratings.fairness ? feedback.ratings.fairness + '.0' : 'N/A'}</span>
+                        </div>
                     </div>
                     ${feedback.comments ? `
                         <div class="comments-section">
@@ -745,6 +778,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const teaching = 3 + Math.floor(Math.random() * 3);
             const communication = 3 + Math.floor(Math.random() * 3);
             const helpfulness = 3 + Math.floor(Math.random() * 3);
+            const knowledge = 3 + Math.floor(Math.random() * 3);
+            const organization = 3 + Math.floor(Math.random() * 3);
+            const availability = 3 + Math.floor(Math.random() * 3);
+            const fairness = 3 + Math.floor(Math.random() * 3);
             
             // Random comment (80% chance of having a comment)
             const hasComment = Math.random() < 0.8;
@@ -758,7 +795,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 ratings: {
                     teaching: teaching,
                     communication: communication,
-                    helpfulness: helpfulness
+                    helpfulness: helpfulness,
+                    knowledge: knowledge,
+                    organization: organization,
+                    availability: availability,
+                    fairness: fairness
                 },
                 comments: comment,
                 date: date.toISOString()
