@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Faculty Feedback System</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <span id="user-initial">S</span>
+                </div>
+                <h3 id="user-name">Student Name</h3>
+                <p id="user-email">student@example.com</p>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#feedback">Submit Feedback</a></li>
+                <li><a href="#history">Feedback History</a></li>
+                <li><a href="#profile">My Profile</a></li>
+                <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="dashboard-content">
+            <header class="dashboard-header">
+                <h1>Student Dashboard</h1>
+                <p class="welcome-text">Welcome back, <span id="welcome-name">Student</span>!</p>
+            </header>
+            
+            <section id="feedback-section" class="content-section active">
+                <h2>Submit Faculty Feedback</h2>
+                <div class="faculty-selection">
+                    <label for="faculty-select">Select Faculty:</label>
+                    <select id="faculty-select">
+                        <option value="">-- Select a faculty member --</option>
+                        <!-- Faculty options will be loaded dynamically -->
+                    </select>
+                    
+                    <label for="course-select">Select Course:</label>
+                    <select id="course-select" disabled>
+                        <option value="">-- Select a course --</option>
+                        <!-- Course options will be loaded dynamically -->
+                    </select>
+                </div>
+                
+                <form id="feedback-form">
+                    <div class="rating-container">
+                        <h3>Teaching Quality</h3>
+                        <div class="rating">
+                            <input type="radio" id="teaching-5" name="teaching" value="5" required>
+                            <label for="teaching-5">5</label>
+                            <input type="radio" id="teaching-4" name="teaching" value="4">
+                            <label for="teaching-4">4</label>
+                            <input type="radio" id="teaching-3" name="teaching" value="3">
+                            <label for="teaching-3">3</label>
+                            <input type="radio" id="teaching-2" name="teaching" value="2">
+                            <label for="teaching-2">2</label>
+                            <input type="radio" id="teaching-1" name="teaching" value="1">
+                            <label for="teaching-1">1</label>
+                        </div>
+                    </div>
+                    
+                    <div class="rating-container">
+                        <h3>Communication Skills</h3>
+                        <div class="rating">
+                            <input type="radio" id="communication-5" name="communication" value="5" required>
+                            <label for="communication-5">5</label>
+                            <input type="radio" id="communication-4" name="communication" value="4">
+                            <label for="communication-4">4</label>
+                            <input type="radio" id="communication-3" name="communication" value="3">
+                            <label for="communication-3">3</label>
+                            <input type="radio" id="communication-2" name="communication" value="2">
+                            <label for="communication-2">2</label>
+                            <input type="radio" id="communication-1" name="communication" value="1">
+                            <label for="communication-1">1</label>
+                        </div>
+                    </div>
+                    
+                    <div class="rating-container">
+                        <h3>Helpfulness</h3>
+                        <div class="rating">
+                            <input type="radio" id="helpfulness-5" name="helpfulness" value="5" required>
+                            <label for="helpfulness-5">5</label>
+                            <input type="radio" id="helpfulness-4" name="helpfulness" value="4">
+                            <label for="helpfulness-4">4</label>
+                            <input type="radio" id="helpfulness-3" name="helpfulness" value="3">
+                            <label for="helpfulness-3">3</label>
+                            <input type="radio" id="helpfulness-2" name="helpfulness" value="2">
+                            <label for="helpfulness-2">2</label>
+                            <input type="radio" id="helpfulness-1" name="helpfulness" value="1">
+                            <label for="helpfulness-1">1</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedback-comments">Additional Comments:</label>
+                        <textarea id="feedback-comments" rows="5" placeholder="Share your thoughts about this faculty member..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                </form>
+            </section>
+            
+            <section id="history-section" class="content-section">
+                <h2>Your Feedback History</h2>
+                <div class="feedback-history">
+                    <!-- Feedback history will be loaded dynamically -->
+                    <p class="empty-state">No feedback submitted yet.</p>
+                </div>
+            </section>
+            
+            <section id="profile-section" class="content-section">
+                <h2>My Profile</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Full Name</label>
+                        <input type="text" id="profile-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" id="profile-email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-department">Department</label>
+                        <input type="text" id="profile-department">
+                    </div>
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password">
+                    </div>
+                    <button type="submit" class="btn">Update Profile</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    
+    <script src="public/js/dashboard.js"></script>
+</body>
+</html> 

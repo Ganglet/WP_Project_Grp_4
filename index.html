@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Feedback System</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/login.css">
+    <style>
+        .demo-accounts {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .demo-accounts h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            font-size: 16px;
+        }
+        
+        .account-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .account-option {
+            background-color: #fff;
+            border: 1px solid var(--grey-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .account-option:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .message {
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .message.error {
+            background-color: #ffebee;
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .message.success {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Faculty Feedback System</h1>
+            <p>Provide your valuable feedback to help us improve</p>
+        </header>
+        
+        <main>
+            <div class="auth-container">
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="login-form">Login</button>
+                    <button class="tab-btn" data-target="register-form">Register</button>
+                </div>
+                
+                <div class="form-container">
+                    <form id="login-form" class="active">
+                        <h2>Login</h2>
+                        <div class="demo-accounts">
+                            <h3>Quick Login with Demo Accounts:</h3>
+                            <div class="account-options">
+                                <button type="button" class="account-option" data-email="john.smith@example.com" data-password="faculty123" data-type="faculty">Faculty: Dr. John Smith</button>
+                                <button type="button" class="account-option" data-email="alice.johnson@example.com" data-password="student123" data-type="student">Student: Alice Johnson</button>
+                                <button type="button" class="account-option" data-email="admin@example.com" data-password="admin123" data-type="admin">Admin User</button>
+                            </div>
+                            <small>Click any account above to auto-fill the login form.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-type">I am a:</label>
+                            <select id="user-type">
+                                <option value="student">Student</option>
+                                <option value="faculty">Faculty</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                    
+                    <form id="register-form">
+                        <h2>Register</h2>
+                        <div class="form-group">
+                            <label for="register-name">Full Name</label>
+                            <input type="text" id="register-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">Password</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-user-type">Register as:</label>
+                            <select id="register-user-type">
+                                <option value="student">Student</option>
+                                <option value="faculty">Faculty</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Register</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2023 Faculty Feedback System</p>
+        </footer>
+    </div>
+    
+    <script src="public/js/auth.js"></script>
+</body>
+</html> 

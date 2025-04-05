@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard | Faculty Feedback System</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <span id="user-initial">F</span>
+                </div>
+                <h3 id="user-name">Faculty Name</h3>
+                <p id="user-email">faculty@example.com</p>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#feedback">View Feedback</a></li>
+                <li><a href="#courses">My Courses</a></li>
+                <li><a href="#profile">My Profile</a></li>
+                <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="dashboard-content">
+            <header class="dashboard-header">
+                <h1>Faculty Dashboard</h1>
+                <p class="welcome-text">Welcome back, <span id="welcome-name">Faculty</span>!</p>
+            </header>
+            
+            <section id="feedback-section" class="content-section active">
+                <h2>Student Feedback</h2>
+                
+                <div class="feedback-filters">
+                    <div class="form-group">
+                        <label for="course-filter">Filter by Course:</label>
+                        <select id="course-filter">
+                            <option value="all">All Courses</option>
+                            <!-- Course options will be loaded dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date-filter">Filter by Date:</label>
+                        <select id="date-filter">
+                            <option value="all">All Time</option>
+                            <option value="recent">Last 30 Days</option>
+                            <option value="semester">Current Semester</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="feedback-stats">
+                    <div class="stat-card">
+                        <h3>Teaching Quality</h3>
+                        <div class="rating-display">
+                            <span class="rating-value">4.5</span>
+                            <div class="rating-stars">
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star half">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Communication</h3>
+                        <div class="rating-display">
+                            <span class="rating-value">4.2</span>
+                            <div class="rating-stars">
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star partial">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Helpfulness</h3>
+                        <div class="rating-display">
+                            <span class="rating-value">4.8</span>
+                            <div class="rating-stars">
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star partial">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Overall</h3>
+                        <div class="rating-display">
+                            <span class="rating-value">4.5</span>
+                            <div class="rating-stars">
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star full">★</span>
+                                <span class="star half">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feedback-comments">
+                    <h3>Student Comments</h3>
+                    <div class="comments-list">
+                        <!-- Comments will be loaded dynamically -->
+                        <div class="comment-card">
+                            <p class="comment-text">"Very knowledgeable and always willing to help students. Makes complex topics easy to understand."</p>
+                            <div class="comment-meta">
+                                <span class="comment-course">Introduction to Programming</span>
+                                <span class="comment-date">15 Apr 2023</span>
+                            </div>
+                        </div>
+                        
+                        <div class="comment-card">
+                            <p class="comment-text">"Great lecturer, but sometimes goes too fast through difficult concepts."</p>
+                            <div class="comment-meta">
+                                <span class="comment-course">Data Structures</span>
+                                <span class="comment-date">10 Apr 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="courses-section" class="content-section">
+                <h2>My Courses</h2>
+                <div class="courses-list">
+                    <!-- Courses will be loaded dynamically -->
+                    <div class="course-card">
+                        <h3>Introduction to Programming</h3>
+                        <p><strong>Code:</strong> CS101</p>
+                        <p><strong>Students:</strong> 45</p>
+                        <p><strong>Feedback received:</strong> 32</p>
+                        <button class="btn btn-small">View Feedback</button>
+                    </div>
+                    
+                    <div class="course-card">
+                        <h3>Data Structures</h3>
+                        <p><strong>Code:</strong> CS201</p>
+                        <p><strong>Students:</strong> 38</p>
+                        <p><strong>Feedback received:</strong> 25</p>
+                        <button class="btn btn-small">View Feedback</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="profile-section" class="content-section">
+                <h2>My Profile</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Full Name</label>
+                        <input type="text" id="profile-name" value="Faculty Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" id="profile-email" value="faculty@example.com" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-department">Department</label>
+                        <input type="text" id="profile-department" value="Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-title">Title</label>
+                        <input type="text" id="profile-title" value="Associate Professor">
+                    </div>
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password">
+                    </div>
+                    <button type="submit" class="btn">Update Profile</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    
+    <script src="public/js/faculty-dashboard.js"></script>
+</body>
+</html> 
