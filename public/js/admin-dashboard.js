@@ -176,6 +176,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Map faculty IDs with user data
         facultyData = facultyData.map(faculty => {
+            // Find the expected faculty data from our list
+            const expectedFaculty = expectedFaculties.find(ef => ef.id === faculty.id) || faculty;
+            
             const user = users.find(u => u.id === faculty.user_id || 
                                      (u.userType === 'faculty' && 
                                       (u.email === `${faculty.name.toLowerCase().replace(/\s+/g, '.')}@example.com` ||
@@ -213,10 +216,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             return {
                 id: faculty.id,
-                name: user ? user.name : faculty.name,
-                email: user ? user.email : `${faculty.name.toLowerCase().replace(/\s+/g, '.')}@example.com`,
-                department: faculty.department,
-                title: faculty.title || user?.title || 'Faculty Member',
+                name: user ? user.name : expectedFaculty.name, // Use expected faculty name
+                email: user ? user.email : `${expectedFaculty.name.toLowerCase().replace(/\s+/g, '.')}@example.com`,
+                department: expectedFaculty.department,
+                title: faculty.title || user?.title || expectedFaculty.title || 'Faculty Member',
                 avgRating: avgRating.toFixed(1),
                 feedbackCount: facultyFeedback.length
             };
@@ -258,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 html += `
                     <div class="faculty-card">
-                        <h3>${faculty.name}</h3>
+                        <h3>${expectedFaculties.find(ef => ef.id === faculty.id)?.name || faculty.name}</h3>
                         <p><strong>Department:</strong> ${faculty.department}</p>
                         <p><strong>Title:</strong> ${faculty.title}</p>
                         <div class="rating-summary">
@@ -310,9 +313,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                (u.email === `${faculty.name.toLowerCase().replace(/\s+/g, '.')}@example.com` ||
                                 u.department === faculty.department)));
         
-        // Update faculty with user info if available
+        // Find the expected faculty data
+        const expectedFaculty = expectedFaculties.find(ef => ef.id === facultyId);
+        
+        // Update faculty with user info if available, otherwise use expected faculty data
         if (user) {
             faculty.name = user.name;
+        } else if (expectedFaculty) {
+            faculty.name = expectedFaculty.name;
+            faculty.department = expectedFaculty.department;
+            faculty.title = expectedFaculty.title;
         }
         
         // Update UI with faculty info
