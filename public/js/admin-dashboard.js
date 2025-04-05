@@ -161,9 +161,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const allFeedback = JSON.parse(localStorage.getItem('feedback') || '[]');
         
-        // Match faculty IDs with user data
-        const facultyData = faculties.map(faculty => {
-            const user = users.find(u => u.id === faculty.user_id || (u.userType === 'faculty' && u.department === faculty.department));
+        // Check if faculties array has all 6 faculty members
+        const expectedFaculties = [
+            { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science', title: 'Associate Professor' },
+            { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics', title: 'Professor' },
+            { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics', title: 'Assistant Professor' },
+            { id: 'f4', name: 'Dr. Michael Williams', department: 'Chemistry', title: 'Associate Professor' },
+            { id: 'f5', name: 'Prof. Sarah Brown', department: 'Biology', title: 'Professor' },
+            { id: 'f6', name: 'Dr. David Miller', department: 'Engineering', title: 'Assistant Professor' }
+        ];
+        
+        // If faculties array is empty or incomplete, use the expected faculties
+        let facultyData = faculties.length === 6 ? faculties : expectedFaculties;
+        
+        // Map faculty IDs with user data
+        facultyData = facultyData.map(faculty => {
+            const user = users.find(u => u.id === faculty.user_id || 
+                                     (u.userType === 'faculty' && 
+                                      (u.email === `${faculty.name.toLowerCase().replace(/\s+/g, '.')}@example.com` ||
+                                       u.department === faculty.department)));
             
             // Calculate average rating
             const facultyFeedback = allFeedback.filter(f => f.facultyId === faculty.id);
@@ -197,55 +213,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             return {
                 id: faculty.id,
-                name: user ? user.name : 'Unknown Faculty',
-                email: user ? user.email : '',
+                name: user ? user.name : faculty.name,
+                email: user ? user.email : `${faculty.name.toLowerCase().replace(/\s+/g, '.')}@example.com`,
                 department: faculty.department,
                 title: faculty.title || user?.title || 'Faculty Member',
                 avgRating: avgRating.toFixed(1),
                 feedbackCount: facultyFeedback.length
             };
         });
-        
-        // Add more faculty if the data seems incomplete
-        // This is for demo purposes - in a real app, you'd have proper faculty data
-        if (facultyData.length < 6) {
-            const additionalFaculties = [
-                {
-                    id: 'f4',
-                    name: 'Dr. Michael Williams',
-                    email: 'michael.williams@example.com',
-                    department: 'Chemistry',
-                    title: 'Associate Professor',
-                    avgRating: '4.3',
-                    feedbackCount: 19
-                },
-                {
-                    id: 'f5',
-                    name: 'Prof. Sarah Brown',
-                    email: 'sarah.brown@example.com',
-                    department: 'Biology',
-                    title: 'Professor',
-                    avgRating: '4.7',
-                    feedbackCount: 22
-                },
-                {
-                    id: 'f6',
-                    name: 'Dr. David Miller',
-                    email: 'david.miller@example.com',
-                    department: 'Engineering',
-                    title: 'Assistant Professor',
-                    avgRating: '4.1',
-                    feedbackCount: 16
-                }
-            ];
-            
-            // Add only the faculties that don't already exist
-            additionalFaculties.forEach(faculty => {
-                if (!facultyData.some(f => f.id === faculty.id)) {
-                    facultyData.push(faculty);
-                }
-            });
-        }
         
         // Apply filters
         let filteredFaculties = facultyData;
@@ -307,66 +282,37 @@ document.addEventListener('DOMContentLoaded', function() {
         const faculties = JSON.parse(localStorage.getItem('faculties') || '[]');
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         
-        // Find the faculty
-        let faculty;
+        // Define the expected faculties list
+        const expectedFaculties = [
+            { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science', title: 'Associate Professor' },
+            { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics', title: 'Professor' },
+            { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics', title: 'Assistant Professor' },
+            { id: 'f4', name: 'Dr. Michael Williams', department: 'Chemistry', title: 'Associate Professor' },
+            { id: 'f5', name: 'Prof. Sarah Brown', department: 'Biology', title: 'Professor' },
+            { id: 'f6', name: 'Dr. David Miller', department: 'Engineering', title: 'Assistant Professor' }
+        ];
         
-        // Check in the regular faculties array
-        const regularFaculty = faculties.find(f => f.id === facultyId);
-        if (regularFaculty) {
-            const user = users.find(u => u.id === regularFaculty.user_id || (u.userType === 'faculty' && u.department === regularFaculty.department));
-            faculty = {
-                id: regularFaculty.id,
-                name: user ? user.name : 'Unknown Faculty',
-                department: regularFaculty.department,
-                title: regularFaculty.title || user?.title || 'Faculty Member'
-            };
-        } else {
-            // Check for additional faculties (for demo)
-            const additionalFaculties = [
-                {
-                    id: 'f1',
-                    name: 'Dr. John Smith',
-                    department: 'Computer Science',
-                    title: 'Associate Professor'
-                },
-                {
-                    id: 'f2',
-                    name: 'Prof. Jane Doe',
-                    department: 'Mathematics',
-                    title: 'Professor'
-                },
-                {
-                    id: 'f3',
-                    name: 'Dr. Robert Johnson',
-                    department: 'Physics',
-                    title: 'Assistant Professor'
-                },
-                {
-                    id: 'f4',
-                    name: 'Dr. Michael Williams',
-                    department: 'Chemistry',
-                    title: 'Associate Professor'
-                },
-                {
-                    id: 'f5',
-                    name: 'Prof. Sarah Brown',
-                    department: 'Biology',
-                    title: 'Professor'
-                },
-                {
-                    id: 'f6',
-                    name: 'Dr. David Miller',
-                    department: 'Engineering',
-                    title: 'Assistant Professor'
-                }
-            ];
-            
-            faculty = additionalFaculties.find(f => f.id === facultyId);
+        // Find the faculty from localStorage or from our expected list
+        let faculty = faculties.find(f => f.id === facultyId);
+        
+        if (!faculty) {
+            faculty = expectedFaculties.find(f => f.id === facultyId);
         }
         
         if (!faculty) {
             showMessage('Faculty not found', 'error');
             return;
+        }
+        
+        // Find the corresponding user
+        const user = users.find(u => u.id === faculty.user_id || 
+                               (u.userType === 'faculty' && 
+                               (u.email === `${faculty.name.toLowerCase().replace(/\s+/g, '.')}@example.com` ||
+                                u.department === faculty.department)));
+        
+        // Update faculty with user info if available
+        if (user) {
+            faculty.name = user.name;
         }
         
         // Update UI with faculty info
@@ -377,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const courses = JSON.parse(localStorage.getItem('courses') || '{}');
         const facultyCourses = courses[facultyId] || [];
         
-        // If courses array is empty, add some demo courses
+        // If courses array is empty, add demo courses
         const demoCourses = {
             'f1': [
                 { id: 'c1', name: 'Introduction to Programming', code: 'CS101' },

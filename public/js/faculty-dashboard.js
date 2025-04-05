@@ -152,8 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let facultyId = null;
         
-        // For demo, we'll use mock data since we don't have a real faculty-email mapping
-        // In a real app, this would come from the database
+        // Map faculty emails to their IDs
         const facultyEmails = {
             'john.smith@example.com': 'f1',
             'jane.doe@example.com': 'f2',
@@ -225,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Try to find faculty ID for current user
         const facultyEmail = currentUser.email;
         
-        // For demo, we'll use mock data since we don't have a real faculty-email mapping
+        // Map faculty emails to their IDs - ensure consistency with loadFacultyData
         const facultyEmails = {
             'john.smith@example.com': 'f1',
             'jane.doe@example.com': 'f2',

@@ -205,26 +205,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if facultyData already exists in localStorage
         const existingFaculties = JSON.parse(localStorage.getItem('faculties') || '[]');
         
-        if (existingFaculties.length > 0) {
-            // Use existing data from localStorage (which may have been populated by auth.js)
-            populateFacultySelect(existingFaculties);
-        } else {
-            // If no data exists, create and save the expanded faculty list
-            const faculties = [
-                { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science', title: 'Associate Professor' },
-                { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics', title: 'Professor' },
-                { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics', title: 'Assistant Professor' },
-                { id: 'f4', name: 'Dr. Michael Williams', department: 'Chemistry', title: 'Associate Professor' },
-                { id: 'f5', name: 'Prof. Sarah Brown', department: 'Biology', title: 'Professor' },
-                { id: 'f6', name: 'Dr. David Miller', department: 'Engineering', title: 'Assistant Professor' }
-            ];
-            
-            // Save to localStorage
-            localStorage.setItem('faculties', JSON.stringify(faculties));
-            
-            // Populate faculty select
-            populateFacultySelect(faculties);
-        }
+        // Create the complete faculty list
+        const faculties = [
+            { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science', title: 'Associate Professor' },
+            { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics', title: 'Professor' },
+            { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics', title: 'Assistant Professor' },
+            { id: 'f4', name: 'Dr. Michael Williams', department: 'Chemistry', title: 'Associate Professor' },
+            { id: 'f5', name: 'Prof. Sarah Brown', department: 'Biology', title: 'Professor' },
+            { id: 'f6', name: 'Dr. David Miller', department: 'Engineering', title: 'Assistant Professor' }
+        ];
+        
+        // Save to localStorage (always save the complete list)
+        localStorage.setItem('faculties', JSON.stringify(faculties));
+        
+        // Populate faculty select
+        populateFacultySelect(faculties);
     }
     
     function populateFacultySelect(faculties) {
