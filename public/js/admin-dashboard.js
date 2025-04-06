@@ -547,17 +547,17 @@ document.addEventListener('DOMContentLoaded', function() {
         let feedbackCount = feedback.length;
         
         // Additional demo faculties
-        const additionalFaculties = [
-            { id: 'f1', department: 'Computer Science' },
-            { id: 'f2', department: 'Mathematics' },
-            { id: 'f3', department: 'Physics' },
-            { id: 'f4', department: 'Chemistry' },
-            { id: 'f5', department: 'Biology' },
-            { id: 'f6', department: 'Engineering' }
+        const expectedFaculties = [
+            { id: 'f1', name: 'Dr. John Smith', department: 'Computer Science', title: 'Associate Professor' },
+            { id: 'f2', name: 'Prof. Jane Doe', department: 'Mathematics', title: 'Professor' },
+            { id: 'f3', name: 'Dr. Robert Johnson', department: 'Physics', title: 'Assistant Professor' },
+            { id: 'f4', name: 'Dr. Michael Williams', department: 'Chemistry', title: 'Associate Professor' },
+            { id: 'f5', name: 'Prof. Sarah Brown', department: 'Biology', title: 'Professor' },
+            { id: 'f6', name: 'Dr. David Miller', department: 'Engineering', title: 'Assistant Professor' }
         ];
         
         // Add only the faculties that don't already exist
-        additionalFaculties.forEach(faculty => {
+        expectedFaculties.forEach(faculty => {
             if (!faculties.some(f => f.id === faculty.id)) {
                 facultyCount++;
             }
@@ -594,52 +594,81 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('total-courses').textContent = courseCount;
         document.getElementById('total-feedback').textContent = feedbackCount;
         
-        // Department statistics
-        // For demo purposes, we'll use hardcoded values
-        const departmentStatistics = [
-            {
-                name: 'Computer Science',
-                faculties: 2,
-                courses: 6,
-                avgRating: 4.5,
-                feedbackCount: 45
-            },
-            {
-                name: 'Mathematics',
-                faculties: 1,
-                courses: 4,
-                avgRating: 4.2,
-                feedbackCount: 32
-            },
-            {
-                name: 'Physics',
-                faculties: 1,
-                courses: 4,
-                avgRating: 4.3,
-                feedbackCount: 28
-            },
-            {
-                name: 'Chemistry',
-                faculties: 1,
-                courses: 3,
-                avgRating: 4.4,
-                feedbackCount: 22
-            },
-            {
-                name: 'Biology',
-                faculties: 1,
-                courses: 3,
-                avgRating: 4.7,
-                feedbackCount: 25
-            },
-            {
-                name: 'Engineering',
-                faculties: 1,
-                courses: 3,
-                avgRating: 4.1,
-                feedbackCount: 19
+        // Calculate department statistics from actual feedback data
+        const allFeedback = feedback.length > 0 ? feedback : [];
+        const departmentMap = new Map();
+        
+        // Initialize department data with expected departments
+        const departments = ['Computer Science', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'Engineering'];
+        departments.forEach(dept => {
+            departmentMap.set(dept, {
+                name: dept,
+                faculties: expectedFaculties.filter(f => f.department === dept).length,
+                courses: (dept === 'Computer Science' ? 4 : (dept === 'Mathematics' ? 4 : (dept === 'Physics' ? 4 : 3))),
+                totalRating: 0,
+                feedbackCount: 0
+            });
+        });
+        
+        // Create a map of faculty IDs to departments
+        const facultyDepartmentMap = new Map();
+        expectedFaculties.forEach(faculty => {
+            facultyDepartmentMap.set(faculty.id, faculty.department);
+        });
+        
+        // Calculate actual feedback data for each department
+        allFeedback.forEach(feedbackItem => {
+            const facultyId = feedbackItem.facultyId;
+            const department = facultyDepartmentMap.get(facultyId);
+            
+            if (department && departmentMap.has(department)) {
+                const deptData = departmentMap.get(department);
+                
+                // Calculate average rating for this feedback
+                const ratings = feedbackItem.ratings;
+                const ratingValues = [
+                    ratings.teaching || 0,
+                    ratings.communication || 0,
+                    ratings.helpfulness || 0,
+                    ratings.knowledge || 0,
+                    ratings.organization || 0,
+                    ratings.availability || 0,
+                    ratings.fairness || 0
+                ];
+                
+                // Count non-zero ratings
+                const validRatings = ratingValues.filter(r => r > 0);
+                const avgRating = validRatings.length > 0 ? 
+                    validRatings.reduce((sum, val) => sum + val, 0) / validRatings.length : 0;
+                
+                // Update department data
+                deptData.totalRating += avgRating;
+                deptData.feedbackCount++;
+                departmentMap.set(department, deptData);
             }
-        ];
+        });
+        
+        // If no real feedback, generate demo statistics
+        if (allFeedback.length === 0) {
+            // Demo values
+            departmentMap.set('Computer Science', { name: 'Computer Science', faculties: 2, courses: 6, totalRating: 201, feedbackCount: 45 });
+            departmentMap.set('Mathematics', { name: 'Mathematics', faculties: 1, courses: 4, totalRating: 134.4, feedbackCount: 32 });
+            departmentMap.set('Physics', { name: 'Physics', faculties: 1, courses: 4, totalRating: 120.4, feedbackCount: 28 });
+            departmentMap.set('Chemistry', { name: 'Chemistry', faculties: 1, courses: 3, totalRating: 96.8, feedbackCount: 22 });
+            departmentMap.set('Biology', { name: 'Biology', faculties: 1, courses: 3, totalRating: 117.5, feedbackCount: 25 });
+            departmentMap.set('Engineering', { name: 'Engineering', faculties: 1, courses: 3, totalRating: 77.9, feedbackCount: 19 });
+        }
+        
+        // Format department statistics for display
+        const departmentStatistics = Array.from(departmentMap.values()).map(dept => {
+            return {
+                name: dept.name,
+                faculties: dept.faculties,
+                courses: dept.courses,
+                avgRating: dept.feedbackCount > 0 ? (dept.totalRating / dept.feedbackCount).toFixed(1) : '0.0',
+                feedbackCount: dept.feedbackCount
+            };
+        });
         
         const departmentContainer = document.getElementById('department-statistics');
         let html = '';
